@@ -2,7 +2,6 @@
 Configurações globais do projeto
 Exploracao-APIs-Google
 """
-
 import os
 from pathlib import Path
 from dotenv import load_dotenv
