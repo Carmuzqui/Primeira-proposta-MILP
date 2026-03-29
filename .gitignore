@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# Ambiente
+.env
+.env.local
+
+# Cache
+cache/
+*.pkl
+*.pickle
+
+# Dados sensíveis
+dados/*.csv
+dados/*.json
+!dados/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/
