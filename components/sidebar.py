@@ -93,8 +93,8 @@ def render_sidebar():
     """Renderiza a sidebar e retorna os parâmetros configurados pelo usuário."""
     with st.sidebar:    
         st.header("Parâmetros espaciais")
-        lat = st.number_input("Latitude inicial", value=-22.815313, format="%.6f")
-        lng = st.number_input("Longitude inicial", value=-47.06914, format="%.6f")
+        lat = st.number_input("Latitude inicial", value=-22.817100, format="%.6f")
+        lng = st.number_input("Longitude inicial", value=-47.069800, format="%.6f")
         
         # Adicionado format="%.1f" para exibir apenas uma casa decimal (ex: 2.0, 2.5)
         raio_km = st.slider("Raio de busca (km)", min_value=1.0, max_value=50.0, value=2.0, step=0.5, format="%.1f")
