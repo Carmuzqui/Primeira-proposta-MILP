@@ -360,9 +360,9 @@ def resolver_modelo_cplex(cenarios_cplex: List[Dict], dados_cobertura: Dict, met
         
         # Log limpo no terminal
         print(f"\n✅ SOLUÇÃO ÓTIMA ENCONTRADA!")
-        print(f"💰 Lucro Global Estimado: {lucro_total:.2f}")
-        print(f"🎯 Cobertura Atingida: {pct_cobertura:.1f}% ({cobertura_final}/{total_pois} POIs)")
-        print(f"📍 Nodos Selecionados: {', '.join(nodos_selecionados)}\n")
+        print(f"Lucro global estimado: {lucro_total:.2f}")
+        print(f"Cobertura atingida: {pct_cobertura:.1f}% ({cobertura_final}/{total_pois} POIs)")
+        print(f"Nodos selecionados: {', '.join(nodos_selecionados)}\n")
 
         return {
             'status': 'Optimal',
