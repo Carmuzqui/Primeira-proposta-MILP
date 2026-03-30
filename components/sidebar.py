@@ -78,7 +78,7 @@ def render_sidebar():
         # st.header("Otimização Matemática")
         # st.caption("Gera os lucros pré-computados e resolve o modelo MILP (CPLEX).")
         # Botão de Otimização destacado
-        btn_otimizar = st.button("🟢 Otimizar Rede (CPLEX)", type="primary", use_container_width=True)
+        btn_otimizar = st.button("🟢 Otimizar designação (CPLEX)", type="primary", use_container_width=True)
 
     # Converte o raio de km para metros internamente antes de enviar ao app.py, 
     # mantendo a compatibilidade com a matemática das APIs.

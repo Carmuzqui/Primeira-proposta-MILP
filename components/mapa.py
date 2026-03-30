@@ -51,11 +51,28 @@
 #                 color='blue', weight=1, fill=True, fillColor='blue', fillOpacity=0.05
 #             ).add_to(mapa)
             
+#             # HTML customizado para o Popup do Nodo Candidato com links para o Google Maps
+#             lat_nodo = row['Lat_Centroide']
+#             lng_nodo = row['Lng_Centroide']
+            
+#             popup_nodo_html = f"""
+#             <div style="font-family: Arial, sans-serif; width: 210px;">
+#                 <h4 style="margin: 0 0 8px 0; color: #000; border-bottom: 1px solid #ccc; padding-bottom: 5px;">Nodo candidato</h4>
+#                 <p style="margin: 5px 0; font-size: 12px;"><b>POIs na área:</b> {row['Qtd_POIs']}</p>
+#                 <p style="margin: 5px 0; font-size: 12px;"><b>Score base:</b> {row['Score_Estimado']:.1f}</p>
+                
+#                 <div style="margin-top: 12px; display: flex; justify-content: space-between;">
+#                     <a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint={lat_nodo},{lng_nodo}" target="_blank" style="font-size: 11px; color: #fff; background-color: #4285F4; padding: 5px 8px; text-decoration: none; border-radius: 4px; text-align: center; flex: 1; margin-right: 4px;">Street View</a>
+#                     <a href="https://www.google.com/maps/search/?api=1&query={lat_nodo},{lng_nodo}" target="_blank" style="font-size: 11px; color: #fff; background-color: #0F9D58; padding: 5px 8px; text-decoration: none; border-radius: 4px; text-align: center; flex: 1; margin-left: 4px;">Mapa</a>
+#                 </div>
+#             </div>
+#             """
+            
 #             # Ícone do Nodo Candidato (Restaurado para a cor preta original)
 #             folium.Marker(
-#                 [row['Lat_Centroide'], row['Lng_Centroide']],
-#                 popup=f"<b>CANDIDATO EVCS</b><br>POIs na área: {row['Qtd_POIs']}<br>Score base: {row['Score_Estimado']:.1f}",
-#                 tooltip="Nodo candidato otimizado",
+#                 [lat_nodo, lng_nodo],
+#                 popup=folium.Popup(popup_nodo_html, max_width=250),
+#                 tooltip="Clique para inspecionar local",
 #                 icon=folium.Icon(color='black', icon='wrench', prefix='fa')
 #             ).add_to(mapa)
 
@@ -179,6 +196,9 @@
 
 
 
+
+
+
 """
 Componente: Renderização interativa do mapa espacial
 """
@@ -189,12 +209,12 @@ from folium.plugins import HeatMap
 from folium.features import DivIcon
 from streamlit_folium import st_folium
 
-def renderizar_mapa_completo(lat, lng, raio, df_pois, df_cand, grid, mostrar_nodos, mostrar_heatmap, mostrar_eletropostos, dados_eletropostos, categorias_pois):
+def renderizar_mapa_completo(lat, lng, raio, df_pois, df_cand, grid, mostrar_nodos, mostrar_heatmap, mostrar_eletropostos, dados_eletropostos, categorias_pois, nodos_otimizados=None):
     """Constrói e renderiza o mapa com controle estrito de camadas, ícones e auto-zoom."""
     
-    # --- CÁLCULO AUTOMÁTICO DO ZOOM ---
-    # Base empírica: Raio de 2.000m fica perfeitamente enquadrado no zoom 14.
-    # A cada vez que o raio dobra, a fórmula afasta a câmera em exato 1 nível de zoom.
+    if nodos_otimizados is None:
+        nodos_otimizados = []
+
     if raio > 0:
         zoom_calculado = 14.5 - math.log2(raio / 2000.0)
         zoom_start = int(round(zoom_calculado))
@@ -203,7 +223,6 @@ def renderizar_mapa_completo(lat, lng, raio, df_pois, df_cand, grid, mostrar_nod
 
     mapa = folium.Map(location=[lat, lng], zoom_start=zoom_start, tiles='CartoDB positron')
         
-    # --- CAMADA 1: MAPA DE CALOR (Fundo absoluto) ---
     if mostrar_heatmap:
         heat_data = [[row['Lat'], row['Lng'], row['Peso']] for index, row in df_pois.iterrows()]
         HeatMap(
@@ -213,32 +232,37 @@ def renderizar_mapa_completo(lat, lng, raio, df_pois, df_cand, grid, mostrar_nod
             gradient={0.2: 'blue', 0.6: 'lime', 1.0: 'red'} 
         ).add_to(mapa)
 
-    # Limite de busca e Centro
     folium.Circle([lat, lng], radius=raio, color='gray', fill=False, dash_array='5, 5', weight=2).add_to(mapa)
     folium.CircleMarker([lat, lng], radius=5, color='black', fill=True, popup="Centro da Busca").add_to(mapa)
     
-    # --- CAMADA 2 E 3: GRADE E NODOS CANDIDATOS (Marcadores base) ---
     if mostrar_nodos:
-        for _, row in df_cand.iterrows():
+        for index, row in df_cand.iterrows():
             i, j = row['cell_i'], row['cell_j']
             c_lat_min = grid['lat_min'] + (i * grid['lat_step'])
             c_lat_max = c_lat_min + grid['lat_step']
             c_lng_min = grid['lng_min'] + (j * grid['lng_step'])
             c_lng_max = c_lng_min + grid['lng_step']
             
-            # Polígono da malha
             folium.Rectangle(
                 bounds=[[c_lat_min, c_lng_min], [c_lat_max, c_lng_max]],
                 color='blue', weight=1, fill=True, fillColor='blue', fillOpacity=0.05
             ).add_to(mapa)
             
-            # HTML customizado para o Popup do Nodo Candidato com links para o Google Maps
             lat_nodo = row['Lat_Centroide']
             lng_nodo = row['Lng_Centroide']
             
+            # Formata a string de ID do candidato para verificar se foi selecionado na otimização
+            candidato_id = f"C{index}"
+            foi_selecionado = candidato_id in nodos_otimizados
+            
+            # Dinâmica de cor e ícone baseada no resultado da otimização
+            cor_marcador = 'green' if foi_selecionado else 'black'
+            icone_marcador = 'check' if foi_selecionado else 'wrench'
+            titulo_popup = "CANDIDATO EVCS (SELECIONADO)" if foi_selecionado else "CANDIDATO EVCS"
+            
             popup_nodo_html = f"""
             <div style="font-family: Arial, sans-serif; width: 210px;">
-                <h4 style="margin: 0 0 8px 0; color: #000; border-bottom: 1px solid #ccc; padding-bottom: 5px;">Nodo candidato</h4>
+                <h4 style="margin: 0 0 8px 0; color: {cor_marcador}; border-bottom: 1px solid #ccc; padding-bottom: 5px;">{titulo_popup}</h4>
                 <p style="margin: 5px 0; font-size: 12px;"><b>POIs na área:</b> {row['Qtd_POIs']}</p>
                 <p style="margin: 5px 0; font-size: 12px;"><b>Score base:</b> {row['Score_Estimado']:.1f}</p>
                 
@@ -249,15 +273,13 @@ def renderizar_mapa_completo(lat, lng, raio, df_pois, df_cand, grid, mostrar_nod
             </div>
             """
             
-            # Ícone do Nodo Candidato (Restaurado para a cor preta original)
             folium.Marker(
                 [lat_nodo, lng_nodo],
                 popup=folium.Popup(popup_nodo_html, max_width=250),
-                tooltip="Clique para inspecionar local",
-                icon=folium.Icon(color='black', icon='wrench', prefix='fa')
+                tooltip="Nodo selecionado pelo CPLEX" if foi_selecionado else "Clique para inspecionar local",
+                icon=folium.Icon(color=cor_marcador, icon=icone_marcador, prefix='fa')
             ).add_to(mapa)
 
-    # --- CAMADA 4: ELETROPOSTOS (Acima dos nodos candidatos) ---
     if mostrar_eletropostos and dados_eletropostos:
         for posto in dados_eletropostos:
             if 'location' in posto:
@@ -304,7 +326,6 @@ def renderizar_mapa_completo(lat, lng, raio, df_pois, df_cand, grid, mostrar_nod
                 </div>
                 """
                 
-                # Ícone HTML elaborado com o "raio"
                 html_eletroposto = """
                 <div style="
                     background-color: #2e7d32;
@@ -328,8 +349,6 @@ def renderizar_mapa_completo(lat, lng, raio, df_pois, df_cand, grid, mostrar_nod
                     tooltip=f"⚡ {nome}"
                 ).add_to(mapa)
 
-    # --- CAMADA 5: POIs ORIGINAIS (Topo absoluto) ---
-    # Criamos um painel personalizado no Leaflet para forçar os POIs a renderizarem por cima das chaves e eletropostos.
     folium.map.CustomPane('pois_top_pane', z_index=650).add_to(mapa)
     
     for _, row in df_pois.iterrows():
@@ -338,15 +357,13 @@ def renderizar_mapa_completo(lat, lng, raio, df_pois, df_cand, grid, mostrar_nod
             [row['Lat'], row['Lng']],
             radius=4,
             color=cat_info['color'], fill=True, fillOpacity=0.9,
-            pane='pois_top_pane', # Associa ao painel do topo
+            pane='pois_top_pane',
             tooltip=f"{row['Nome']} ({row['Tipo']}) - Peso: {row['Peso']:.1f}"
         ).add_to(mapa)
 
-    # --- LEGENDA DINÂMICA ---
     icone_legenda_ev = "<div style='display:inline-flex; align-items:center; justify-content:center; background-color:#2e7d32; border:1px solid cyan; border-radius:50%; width:14px; height:14px; margin-right:3px; box-shadow: 0 0 2px rgba(0,0,0,0.5);'><i class='fa fa-bolt' style='color:cyan; font-size:8px;'></i></div> Eletroposto (concorrência)<br>"
-    
-    # Restaurado para a cor preta
-    icone_legenda_nodo = "<i class='fa fa-wrench fa-1x' style='color:black;'></i> Nodo candidato (centroide)<br>"
+    icone_legenda_nodo = "<i class='fa fa-wrench fa-1x' style='color:black;'></i> Nodo candidato (não designado)<br>"
+    icone_legenda_otimizado = "<i class='fa fa-check fa-1x' style='color:green;'></i> Nodo selecionado (CPLEX)<br>"
     
     legend_html = f'''
      <div style="position: fixed; 
@@ -362,6 +379,7 @@ def renderizar_mapa_completo(lat, lng, raio, df_pois, df_cand, grid, mostrar_nod
          <hr style="margin: 5px 0;">
          <div style="width:12px; height:12px; background-color:lightblue; display:inline-block; border:1px solid blue;"></div> Área de cobertura<br>
          {icone_legenda_nodo if mostrar_nodos else ""}
+         {icone_legenda_otimizado if (mostrar_nodos and len(nodos_otimizados) > 0) else ""}
          {"<hr style='margin: 5px 0;'><span style='background: linear-gradient(to right, blue, lime, red); width: 100%; height: 10px; display: block;'></span> Densidade de demanda" if mostrar_heatmap else ""}
      </div>
      '''
