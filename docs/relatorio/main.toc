@@ -1,0 +1,28 @@
+\babel@toc {brazilian}{}\relax 
+\contentsline {section}{\numberline {1}Introdução e contexto do problema}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Pré-requisitos do sistema}{2}{subsection.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.1}Python 3.10}{2}{subsubsection.1.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.2}IBM ILOG CPLEX Optimization Studio}{2}{subsubsection.1.1.2}%
+\contentsline {subsection}{\numberline {1.2}Configuração do ambiente}{2}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Execução da ferramenta}{3}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Estrutura de arquivos}{3}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}Solução de problemas comuns}{3}{subsection.1.5}%
+\contentsline {section}{\numberline {2}Arquitetura de pré-processamento e simulação espacial}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Geração de candidatos e atratividade gravitacional base}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Concorrência existente e decaimento espacial}{5}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Canibalização potencial e a matriz de cenários}{6}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Mapeamento de cobertura (\textit {Set-Covering})}{6}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Modelo matemático de otimização (MILP)}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Conjuntos}{7}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Parâmetros}{7}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Lucro e Atratividade (pré-computados via simulador espacial)}{7}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Qualidade de rede}{8}{subsubsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.3}Variáveis de decisão}{8}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Função objetivo}{8}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Restrições}{8}{subsection.3.5}%
+\contentsline {subsubsection}{\numberline {3.5.1}Grupo 1: Linearização e Configuração de Vizinhos}{8}{subsubsection.3.5.1}%
+\contentsline {subsubsection}{\numberline {3.5.2}Grupo 2: Qualidade Global de Rede (Considerando Infraestrutura Existente)}{8}{subsubsection.3.5.2}%
+\contentsline {section}{\numberline {4}Limitações e extensões futuras}{10}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Refinamento dos parâmetros de concorrência e demanda}{10}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Expansão do modelo de otimização (MILP)}{10}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Otimização robusta e incerteza}{10}{subsection.4.3}%

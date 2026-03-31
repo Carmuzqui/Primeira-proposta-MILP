@@ -1,0 +1,91 @@
+Este guia orienta a configuração e utilização da ferramenta de otimização de forma direta e autônoma.
+
+\subsection{Pré-requisitos do sistema}
+
+Para executar esta ferramenta, seu ambiente deve atender a dois requisitos fundamentais:
+
+\subsubsection{Python 3.10}
+Verifique se o Python está instalado abrindo o \textit{Prompt de Comando} (cmd) e digitando:
+
+\begin{verbatim}
+py --list
+\end{verbatim}
+
+\textbf{Como interpretar:}
+\begin{itemize}
+    \item Se aparecer \texttt{ - 3.10.X} (ou superior), o Python está pronto.
+    \item Se der erro, baixe o instalador em \texttt{python.org} e marque a opção "Add to PATH" durante a instalação.
+\end{itemize}
+
+\subsubsection{IBM ILOG CPLEX Optimization Studio}
+O modelo utiliza a biblioteca \texttt{docplex}, que requer o motor de otimização da IBM instalado no sistema.
+
+\begin{itemize}
+    \item É obrigatório ter uma instalação do CPLEX com licença acadêmica ou comercial.
+    \item Não utilize a versão "Community Edition", ela possui limites restritos de variáveis e restrições que são insuficientes para a complexidade deste case, impedindo a resolução.
+\end{itemize}
+
+
+\subsection{Configuração do ambiente}
+
+Este passo é necessário apenas na primeira vez que você for usar a ferramenta. Localize e execute o arquivo \texttt{criar\_ambiente.bat} na pasta raiz do projeto.
+\begin{itemize}
+    \item Uma janela do terminal se abrirá e instalará automaticamente as dependências.
+    \item Aguarde até ver a mensagem "AMBIENTE CRIADO COM SUCESSO" e feche a janela.
+    \item Se a janela fechar instantaneamente sem mensagens de sucesso, verifique sua instalação do Python.
+\end{itemize}
+
+\subsection{Execução da ferramenta}
+
+Para utilizar o otimizador no dia a dia:
+
+\begin{enumerate}
+    \item Execute o arquivo \texttt{executar\_solver.bat} na pasta raiz.
+    \item Uma janela de seleção de arquivos abrirá automaticamente. Selecione a planilha Excel com os dados de entrada.
+    \item Acompanhe o progresso no terminal. O solver processará os dados e buscará a melhor solução.
+    \item Ao finalizar, a ferramenta abrirá automaticamente a planilha de resultados gerada na pasta \texttt{resultados}.
+\end{enumerate}
+
+\vspace{0.3cm}
+
+\textbf{Controle de Execução (Importante):}
+
+O solver foi configurado para buscar a solução ótima sem um limite de tempo pré-fixado.
+\begin{itemize}
+    \item \textbf{Interrupção manual:} Você pode interromper o processo a qualquer momento pressionando o atalho \texttt{Ctrl + C} na janela do terminal.
+    \item \textbf{Salvamento automático:} Ao interromper o processo, o programa salvará automaticamente a melhor solução encontrada até aquele instante, garantindo que nenhum progresso válido seja perdido.
+\end{itemize}
+
+
+\subsection{Estrutura de arquivos}
+
+A organização das pastas do projeto segue o padrão abaixo. Mantenha essa estrutura para garantir o funcionamento dos scripts automáticos.
+
+\begin{verbatim}
+desafio-otimizacao-suzano/
+|
++-- criar_ambiente.bat          (Configuracao inicial)
++-- executar_solver.bat         (Execucao diaria)
++-- requirements.txt            (Lista de dependencias)
+|
++-- code/                       (Codigos-fonte Python)
+|   +-- modelo.py
+|   +-- gestor_dados.py
+|   +-- exportar_resultados.py
+|
++-- venv/                       (Gerado automaticamente)
++-- resultados/                 (Gerado automaticamente)
+\end{verbatim}
+
+\subsection{Solução de problemas comuns}
+
+\begin{itemize}
+    \item \textbf{Erro "Python não encontrado" ou comando "py" inválido:} O Python não está instalado corretamente. Reinstale marcando a opção "Add to PATH".
+    \item \textbf{Erro "Ambiente não encontrado":} A pasta \texttt{venv} pode ter sido deletada. Execute novamente o arquivo \texttt{criar\_ambiente.bat}.
+    \item \textbf{Erro "Arquivo não encontrado":} Certifique-se de executar os arquivos \texttt{.bat} sempre a partir da pasta raiz do projeto, e não de dentro das subpastas.
+\end{itemize}
+
+\vspace{0.5cm}
+\textbf{Nota de portabilidade:} Esta ferramenta é portável. Para usá-la em outro computador, basta copiar a pasta inteira do projeto e rodar o \texttt{criar\_ambiente.bat} no novo local.
+
+\newpage

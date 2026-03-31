@@ -1,0 +1,342 @@
+% \documentclass[a4paper,12pt]{article}
+
+% % --- PACOTES FUNDAMENTAIS ---
+% \usepackage[utf8]{inputenc}
+% \usepackage[T1]{fontenc}
+% \usepackage[brazilian]{babel}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{geometry}
+% \usepackage{graphicx}
+% \usepackage{setspace}
+% \usepackage{fancyhdr}
+% \usepackage{xcolor} % Para cores personalizadas
+
+% % --- CONFIGURAÇÃO DE LINKS (HYPERREF) ---
+% \usepackage{hyperref} 
+
+% % Definição de azul escuro profissional (opcional)
+% \definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+
+% \hypersetup{
+%     colorlinks=true,        % Ativa cores nos links
+%     linkcolor=black,        % Cor dos links internos (Sumário, referências). Preto para elegância.
+%     filecolor=magenta,      
+%     urlcolor=blue,          % Cor de URLs externas (GitHub, LinkedIn)
+%     citecolor=black,        % Cor de citações bibliográficas
+%     pdftitle={Otimização de Eletropostos (MILP) - Proposta Preliminar},
+%     pdfpagemode=FullScreen,
+%     linktoc=all             % Torna a linha inteira do sumário clicável
+% }
+
+% % --- CONFIGURAÇÃO DE MARGENS ---
+% \geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+
+% \begin{document}
+
+% % --- CAPA ---
+% \begin{titlepage}
+%     \centering
+    
+%     % Cabeçalho Institucional
+%     {\scshape \Large \textbf{UNIVERSIDADE ESTADUAL DE CAMPINAS (UNICAMP)}}\\[0.5cm]
+%     {\large Faculdade de Engenharia Elétrica e de Computação (FEEC)}\\[2.0cm]
+
+%     % Título do Projeto
+%     \rule{\linewidth}{0.5mm} \\[0.4cm]
+%     { \huge \bfseries Proposta preliminar: \\[0.3cm] Otimização da localização de infraestrutura de recarga para veículos elétricos }\\[0.2cm]
+%     { \Large Abordagem via Programação Linear Inteira Mista (MILP) com mitigação de canibalização espacial }\\[0.4cm]
+%     \rule{\linewidth}{0.5mm} \\[2.5cm]
+    
+%     % Informações dos Pesquisadores
+%     \begin{minipage}{0.8\textwidth}
+%         \centering
+%         \textbf{Pesquisadores:}\\[0.4cm]
+%         {\Large Carlos Julian Muñoz Quiroga}\\[0.2em]
+%         \textit{Doutorando em Engenharia Elétrica e de Computação}\\[0.8cm]
+        
+%         {\Large Núbia Sidene Almeida das Virgens}\\[0.2em]
+%         \textit{Revisão e co-desenvolvimento da etapa de otimização}\\
+%     \end{minipage}
+    
+%     \vspace{2cm}
+    
+%     % Links (Opcional - Pode remover se o repositório for privado)
+%     \textbf{Repositório do protótipo e dashboard:}\\
+%     \href{https://github.com/CAMUZQUI/designacao-eletropostos-milp}{designacao-eletropostos-milp}
+    
+%     \vfill
+    
+%     % Rodapé
+%     {\large Campinas, SP}\\
+%     {\large \today}
+    
+% \end{titlepage}
+
+% % --- SUMÁRIO ---
+% \newpage
+% \thispagestyle{empty} 
+
+% \tableofcontents 
+
+% \newpage
+
+% % --- CONTEÚDO MODULAR ---
+
+% \section{Introdução e contexto do problema}
+% \label{sec:introducao}
+% \input{sections/01_introducao}
+
+% \section{Arquitetura de pré-processamento e simulação espacial}
+% \label{sec:pre_processamento}
+% % Onde se explica como a atratividade, a zona vermelha de penalidade e o Set-Covering são calculados em Python antes do solver.
+% \input{sections/02_pre_processamento}
+
+% \section{Modelo matemático de otimização (MILP)}
+% \label{sec:modelo}
+% % Aqui você irá colar aquele código LaTeX completo com a Função Objetivo, R1, R2, R3 e R4
+% \input{sections/03_modelo_matematico}
+
+% \section{Limitações e extensões futuras}
+% \label{sec:extensões}
+% % Seção deixada em branco por enquanto, para preencher ao longo do doutorado.
+% \input{sections/04_extensões_futuras}
+
+% \end{document}
+
+
+
+
+
+
+
+
+
+% \documentclass[a4paper,12pt]{article}
+
+% % --- PACOTES FUNDAMENTAIS ---
+% \usepackage[utf8]{inputenc}
+% \usepackage[T1]{fontenc}
+% \usepackage[brazilian]{babel}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{geometry}
+% \usepackage{graphicx}
+% \usepackage{setspace}
+% \usepackage{fancyhdr}
+% \usepackage{xcolor} % Para cores personalizadas
+
+% % --- CONFIGURAÇÃO DE LINKS (HYPERREF) ---
+% \usepackage{hyperref} 
+
+% % Definição de azul escuro profissional (opcional)
+% \definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+
+% \hypersetup{
+%     colorlinks=true,        % Ativa cores nos links
+%     linkcolor=black,        % Cor dos links internos (Sumário, referências). Preto para elegância.
+%     filecolor=magenta,      
+%     urlcolor=blue,          % Cor de URLs externas (GitHub, LinkedIn)
+%     citecolor=black,        % Cor de citações bibliográficas
+%     pdftitle={Otimização de Eletropostos (MILP) - Proposta Preliminar},
+%     pdfpagemode=FullScreen,
+%     linktoc=all             % Torna a linha inteira do sumário clicável
+% }
+
+% % --- CONFIGURAÇÃO DE MARGENS ---
+% \geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+
+% \begin{document}
+
+% % --- CAPA ---
+% \begin{titlepage}
+%     \centering
+    
+%     % Cabeçalho Institucional
+%     {\scshape \Large \textbf{UNIVERSIDADE ESTADUAL DE CAMPINAS (UNICAMP)}}\\[0.5cm]
+%     {\large Faculdade de Engenharia Elétrica e de Computação (FEEC)}\\[2.0cm]
+
+%     % Título do Projeto
+%     \rule{\linewidth}{0.5mm} \\[0.4cm]
+%     { \huge \bfseries Proposta preliminar: \\[0.3cm] Otimização da localização de infraestrutura de recarga para veículos elétricos }\\[0.2cm]
+%     { \Large Abordagem via Programação Linear Inteira Mista (MILP) com mitigação de canibalização espacial }\\[0.4cm]
+%     \rule{\linewidth}{0.5mm} \\[2.5cm]
+    
+%     % Informações dos Pesquisadores
+%     \begin{minipage}{0.8\textwidth}
+%         \centering
+%         \textbf{Pesquisadores:}\\[0.4cm]
+%         {\Large Núbia Sidene Almeida das Virgens}\\[0.2em]
+%         \textit{Revisão e co-desenvolvimento da etapa de otimização}\\[0.8cm]
+
+%         {\Large Carlos Julian Muñoz Quiroga}\\[0.2em]
+%         \textit{Doutorando em Engenharia Elétrica e de Computação}\\
+%     \end{minipage}
+    
+%     \vspace{2cm}
+    
+%     % Links (Opcional - Pode remover se o repositório for privado)
+%     \textbf{Repositório do protótipo e dashboard:}\\
+%     \href{https://github.com/CAMUZQUI/designacao-eletropostos-milp}{designacao-eletropostos-milp}
+    
+%     \vfill
+    
+%     % Rodapé
+%     {\large Campinas, SP}\\
+%     {\large \today}
+    
+% \end{titlepage}
+
+% % --- SUMÁRIO ---
+% \newpage
+% \thispagestyle{empty} 
+
+% \tableofcontents 
+
+% \newpage
+
+% % --- CONTEÚDO MODULAR ---
+
+% \section{Introdução e contexto do problema}
+% \label{sec:introducao}
+% \input{sections/01_introducao}
+
+% \newpage
+% \section{Arquitetura de pré-processamento e simulação espacial}
+% \label{sec:pre_processamento}
+% % Onde se explica como a atratividade, a zona vermelha de penalidade e o Set-Covering são calculados em Python antes do solver.
+% \input{sections/02_pre_processamento}
+
+% \newpage
+% \section{Modelo matemático de otimização (MILP)}
+% \label{sec:modelo}
+% % Aqui você irá colar aquele código LaTeX completo com a Função Objetivo, R1, R2, R3 e R4
+% \input{sections/03_modelo_matematico}
+
+% \newpage
+% \section{Limitações e extensões futuras}
+% \label{sec:extensões}
+% % Seção deixada em branco por enquanto, para preencher ao longo do doutorado.
+% \input{sections/04_extensões_futuras}
+
+% \end{document}
+
+
+
+
+
+
+
+
+
+\documentclass[a4paper,12pt]{article}
+
+% --- PACOTES FUNDAMENTAIS ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazilian]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{xcolor} % Para cores personalizadas
+
+% --- CONFIGURAÇÃO DE LINKS (HYPERREF) ---
+\usepackage{hyperref} 
+
+% Definição de azul escuro profissional (opcional)
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+
+\hypersetup{
+    colorlinks=true,        % Ativa cores nos links
+    linkcolor=black,        % Cor dos links internos (Sumário, referências). Preto para elegância.
+    filecolor=magenta,      
+    urlcolor=blue,          % Cor de URLs externas (GitHub, LinkedIn)
+    citecolor=black,        % Cor de citações bibliográficas
+    pdftitle={Otimização de Eletropostos (MILP) - Proposta Preliminar},
+    pdfpagemode=FullScreen,
+    linktoc=all             % Torna a linha inteira do sumário clicável
+}
+
+% --- CONFIGURAÇÃO DE MARGENS ---
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+
+% --- CAPA ---
+\begin{titlepage}
+    \centering
+    
+    % Cabeçalho Institucional
+    {\scshape \Large \textbf{UNIVERSIDADE ESTADUAL DE CAMPINAS (UNICAMP)}}\\[0.5cm]
+    {\large Faculdade de Engenharia Elétrica e de Computação (FEEC)}\\[2.0cm]
+
+    % Título do Projeto
+    \rule{\linewidth}{0.5mm} \\[0.4cm]
+    { \huge \bfseries Proposta preliminar: \\[0.3cm] Otimização da localização de infraestrutura de recarga para veículos elétricos }\\[0.2cm]
+    { \Large Abordagem via Programação Linear Inteira Mista (MILP) com mitigação de canibalização espacial }\\[0.4cm]
+    \rule{\linewidth}{0.5mm} \\[2.0cm]
+    
+    % Informações dos Pesquisadores e Orientador
+    \begin{minipage}{0.8\textwidth}
+        \centering
+        \textbf{Pesquisadores:}\\[0.4cm]
+        {\Large Núbia Sidene Almeida das Virgens}\\[0.2em]
+        \textit{Doutoranda em Engenharia Elétrica e de Computação}\\[0.6cm]
+
+        {\Large Carlos Julian Muñoz Quiroga}\\[0.2em]
+        \textit{Doutorando em Engenharia Elétrica e de Computação}\\[0.8cm]
+
+        \textbf{Orientado por:}\\[0.2em]
+        {\Large Prof. Dr. Romis Ribeiro de Faissol Attux}\\
+    \end{minipage}
+    
+    \vspace{1.5cm}
+    
+    % Links (Opcional - Pode remover se o repositório for privado)
+    \textbf{Repositório do protótipo e modelo:}\\
+    \href{https://github.com/Carmuzqui/Primeira-proposta-MILP}{Primeira-proposta-MILP}
+    
+    \vfill
+    
+    % Rodapé
+    {\large Campinas, SP}\\
+    {\large \today}
+    
+\end{titlepage}
+
+% --- SUMÁRIO ---
+\newpage
+\thispagestyle{empty} 
+
+\tableofcontents 
+
+\newpage
+
+% --- CONTEÚDO MODULAR ---
+
+\section{Introdução e contexto do problema}
+\label{sec:introducao}
+\input{sections/01_introducao}
+
+\newpage
+\section{Arquitetura de pré-processamento e simulação espacial}
+\label{sec:pre_processamento}
+% Onde se explica como a atratividade, a zona vermelha de penalidade e o Set-Covering são calculados em Python antes do solver.
+\input{sections/02_pre_processamento}
+
+\newpage
+\section{Modelo matemático de otimização (MILP)}
+\label{sec:modelo}
+% Aqui você irá colar aquele código LaTeX completo com a Função Objetivo, R1, R2, R3 e R4
+\input{sections/03_modelo_matematico}
+
+\newpage
+\section{Limitações e extensões futuras}
+\label{sec:extensoes}
+% Seção deixada em branco por enquanto, para preencher ao longo do doutorado.
+\input{sections/04_extensoes_futuras}
+
+\end{document}

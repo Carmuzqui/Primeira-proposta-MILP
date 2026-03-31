@@ -1,0 +1,47 @@
+A formulação de um problema de localização espacial com interações de mercado (canibalização de demanda) apresenta um desafio inerente: a não-linearidade. Se a atratividade de um novo eletroposto depende de quais outros eletropostos vizinhos serão abertos simultaneamente, a função objetivo original assumiria uma forma bilineal, tornando o problema intratável para solvers exatos em instâncias de grande porte.
+
+Para contornar este obstáculo e garantir uma arquitetura puramente linear (MILP), esta proposta adota uma etapa rigorosa de pré-processamento e simulação espacial. Todo o esforço computacional não-linear é isolado nesta fase, que transforma a topologia urbana em um conjunto de parâmetros fixos que alimentarão o otimizador.
+
+Esta etapa é dividida em quatro fases principais:
+
+\subsection{Geração de candidatos e atratividade gravitacional base}
+
+A área de estudo é inicialmente dividida em uma malha virtual. Para cada quadrante, os Pontos de Interesse (POIs) -- categorizados e ponderados segundo seu potencial de geração de viagens (ex: supermercados, hospitais, shopping centers) -- são mapeados utilizando dados de geolocalização.
+
+O centroide matemático de cada quadrante é calculado e, para garantir o realismo da infraestrutura, aplica-se uma técnica de \textit{Snap to Road} (Ajuste à via). Esta técnica utiliza \textit{Reverse Geocoding} para deslocar o centroide teórico (que poderia recair sobre corpos d'água ou propriedades privadas) para a via pública trafegável mais próxima. Este ponto ajustado torna-se um \textbf{nó candidato} para a instalação de um eletroposto.
+
+Nesta fase, calcula-se a \textbf{Atratividade Base} de cada candidato, que representa a demanda potencial que o local capturaria se operasse como um monopólio isolado.
+
+\subsection{Concorrência existente e decaimento espacial}
+
+Um modelo realista não pode ignorar a infraestrutura de recarga já consolidada na cidade. A presença de um eletroposto concorrente próximo reduz a fração de demanda capturável por um novo candidato.
+
+Para modelar essa interação, implementou-se uma função de \textbf{Decaimento Espacial} baseada na distância real de roteamento (estimada via distância de Haversine com fator de tortuosidade urbana). O modelo estabelece três zonas de impacto para penalizar a atratividade de um candidato:
+
+\begin{itemize}
+    \item \textbf{Zona de Impacto Total (Zona Vermelha):} Se um concorrente está demasiadamente próximo (ex: raio inferior a 300 metros), assume-se sobreposição severa de mercado, aplicando-se a penalidade máxima definida.
+    \item \textbf{Zona de Transição:} Para distâncias intermediárias (ex: entre 300 e 1500 metros), a penalidade decai linearmente, reduzindo o impacto à medida que os postos se distanciam.
+    \item \textbf{Zona Livre:} Se a distância supera o limite máximo de influência (ex: acima de 1500 metros), o concorrente é desconsiderado, assumindo-se impacto nulo.
+\end{itemize}
+
+Ao subtrair as penalidades dos concorrentes reais da Atratividade Base (e descontando uma barreira de custo operacional/viabilidade mínima), obtém-se o \textbf{Retorno Líquido Próprio} do candidato.
+
+\subsection{Canibalização potencial e a matriz de cenários}
+
+A inovação central deste pré-processamento reside no tratamento da concorrência entre os próprios nós candidatos. Como ainda não se sabe quais candidatos serão abertos pelo modelo, calcula-se previamente o impacto de \textit{todas as combinações possíveis}.
+
+Para um dado candidato, o algoritmo identifica seus vizinhos potenciais dentro do raio de influência. Para evitar uma explosão combinatória, restringe-se a análise aos $K$ vizinhos mais impactantes (ex: os 4 ou 5 mais próximos). Em seguida, o simulador gera uma tabela exaustiva contendo o retorno líquido do candidato para todos os cenários de operação de seus vizinhos ($2^K$ configurações). 
+
+Este "menu de retornos" pré-calculado é o que permite ao modelo matemático (Seção \ref{sec:modelo}) realizar escolhas de forma puramente linear, apenas selecionando o cenário correspondente à decisão topológica.
+
+\subsection{Mapeamento de cobertura (\textit{Set-Covering})}
+
+A última etapa do pré-processamento garante os insumos para as métricas de qualidade de rede. O modelo exige que uma porcentagem mínima de todos os POIs da região tenha acesso a pelo menos um eletroposto a uma distância caminhável aceitável (ex: 800 metros, ou cerca de 10 minutos de caminhada).
+
+O simulador realiza uma varredura bidirecional:
+\begin{enumerate}
+    \item \textbf{Cobertura consolidada:} Identifica todos os POIs que já estão a menos da distância caminhável de um eletroposto real existente. Estes são marcados como "atendidos" e isolados, evitando esforços redundantes do modelo.
+    \item \textbf{Mapeamento de viabilidade:} Para os POIs restantes (desassistidos), o sistema mapeia quais nós candidatos têm a capacidade geométrica de cobri-los.
+\end{enumerate}
+
+Este mapeamento previne o problema estatístico de \textit{dupla contagem} -- garantindo que se dois eletropostos novos cobrirem o mesmo supermercado, a métrica global de cobertura contabilizará o benefício apenas uma vez.

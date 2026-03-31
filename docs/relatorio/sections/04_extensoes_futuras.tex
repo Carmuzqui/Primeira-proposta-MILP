@@ -1,0 +1,28 @@
+A arquitetura proposta neste relatório estabelece uma base matemática sólida e computacionalmente eficiente para a localização de infraestrutura de recarga de veículos elétricos (EVCS). O isolamento das não-linearidades em uma etapa prévia de simulação espacial permite que o otimizador MILP opere com máxima performance. 
+
+Contudo, como toda abstração da realidade urbana, o modelo atual apresenta premissas simplificadoras. Para as próximas etapas desta pesquisa de doutorado, propõe-se a expansão do modelo através das seguintes frentes de desenvolvimento:
+
+\subsection{Refinamento dos parâmetros de concorrência e demanda}
+
+Atualmente, o decaimento espacial e a canibalização são governados estritamente pela distância viária. Embora robusta, essa abordagem pode ser enriquecida:
+\begin{itemize}
+    \item \textbf{Heterogeneidade da infraestrutura:} Incorporar metadados detalhados dos eletropostos (ex: quantidade de conectores, potência máxima em kW, tipos de plugue). Um eletroposto ultrarrápido (150 kW) exerce uma força de atração gravitacional e uma penalidade de concorrência significativamente maiores do que um carregador de parede (7 kW).
+    \item \textbf{Modelos de escolha discreta (\textit{Logit/Probit}):} Substituir o decaimento linear da Zona de Transição por modelos probabilísticos de comportamento do consumidor, estimando a probabilidade real de um usuário desviar sua rota para um posto específico.
+\end{itemize}
+
+\subsection{Expansão do modelo de otimização (MILP)}
+
+A estrutura puramente linear do modelo atual (\ref{sec:modelo}) permite a adição de novas restrições sem comprometer a viabilidade computacional. As principais extensões previstas incluem:
+
+\begin{itemize}
+    \item \textbf{Restrição de orçamento global (CAPEX):} Implementar uma inequação que limite o número de nós selecionados ($x_c$) ao orçamento de capital disponível, forçando o solver a priorizar os candidatos de mais alta eficiência marginal ($ \sum c_c \cdot x_c \leq B $).
+    \item \textbf{Capacitação da rede elétrica:} Integrar restrições físicas da rede de distribuição. O modelo deve evitar a alocação de múltiplos eletropostos de alta potência em um mesmo alimentador local que não possua capacidade de carga ociosa suficiente, prevenindo instabilidades na rede.
+    \item \textbf{Formulação multi-período:} Expandir o vetor de decisão para contemplar o horizonte temporal de adoção de VEs ($x_{c,t}$). O modelo não apenas decidirá \textit{onde} instalar, mas \textit{quando} instalar cada estação ao longo de uma década, acompanhando a curva projetada de demanda.
+\end{itemize}
+
+\subsection{Otimização robusta e incerteza}
+
+Os dados de Ponto de Interesse (POI) representam uma fotografia estática da demanda urbana. No entanto, o tecido urbano é dinâmico. Trabalhos futuros poderão aplicar técnicas de \textbf{Otimização Robusta} para lidar com a incerteza nos parâmetros de atratividade ($A_c$). O objetivo será encontrar uma rede de eletropostos que mantenha um desempenho satisfatório e garanta a meta de cobertura ($Q_{\min}^{\text{cob}}$) mesmo sob os piores cenários de projeção de demanda ou falhas parciais na rede concorrente.
+
+\vspace{0.5cm}
+O desenvolvimento iterativo destas extensões não apenas aumentará a fidelidade do modelo frente à realidade operacional das cidades inteligentes, mas também consolidará a contribuição científica desta tese para a área de Pesquisa Operacional aplicada à mobilidade elétrica.
