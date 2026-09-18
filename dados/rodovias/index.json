@@ -1,0 +1,7 @@
+{
+  "SP": [
+    {"ref": "BR-381", "nome": "Fernão Dias",     "arquivo": "br-381_fernao-dias.geojson"},
+    {"ref": "BR-116", "nome": "Dutra",           "arquivo": "br-116_dutra.geojson"},
+    {"ref": "BR-153", "nome": "Transbrasiliana", "arquivo": "br-153_transbrasiliana.geojson"}
+  ]
+}
