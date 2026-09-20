@@ -1487,7 +1487,7 @@ SENSORES_DIR = os.path.join("dados", "sensores")
 MUNICIPIOS_PATH = os.path.join("dados", "municipios", "municipios_sp.json")
 
 # Teto de NOVAS consultas à API por corrida (proteção de custo). None = sem limite.
-LIMITE_NOVAS_CONSULTAS = 10
+LIMITE_NOVAS_CONSULTAS = 100
 # Corte do potencial: candidatos com score_potencial >= CORTE_POTENCIAL passam ao modelo.
 CORTE_POTENCIAL = 2.5
 # No modo rodovia, POIs candidatos devem estar até esta distância do traçado (metros).
